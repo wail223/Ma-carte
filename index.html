@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Carte Metro Flip Swipe Verticale</title>
+  <style>
+    body { display: flex; justify-content: center; align-items: center; height: 100vh; background: #f3f3f3; }
+    .flip-card {
+      background-color: transparent;
+      width: 300px; height: 480px; /* Format portrait */
+      perspective: 1000px;
+      touch-action: pan-x;
+    }
+    .flip-card-inner {
+      position: relative; width: 100%; height: 100%;
+      transition: transform 0.6s cubic-bezier(.4,.2,.6,1);
+      transform-style: preserve-3d;
+    }
+    .flipped { transform: rotateY(180deg); }
+    .flip-card-front, .flip-card-back {
+      position: absolute; width: 100%; height: 100%;
+      backface-visibility: hidden;
+      border-radius: 12px; overflow: hidden;
+      box-shadow: 0 7px 18px rgba(0,0,0,0.12);
+    }
+    .flip-card-front { background: #fff; display: flex; justify-content: center; align-items: center; }
+    .flip-card-back { background: #ffe0b2; transform: rotateY(180deg); display: flex; justify-content: center; align-items: center; }
+    img { object-fit: cover; width: 100%; height: 100%; }
+  </style>
+</head>
+<body>
+  <div class="flip-card" id="metrocard">
+    <div class="flip-card-inner" id="flipInner">
+      <div class="flip-card-front">
+        <img src="https://i.ibb.co/wZmrGFhL/IMG-8097.jpg" alt="Recto Carte Métro" />
+      </div>
+      <div class="flip-card-back">
+        <img src="https://i.ibb.co/TqvnXp6S/51-A4-F091-3-B4-E-4469-BAEF-8-CCFAD657311.jpg" alt="Verso Carte Métro" />
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const flipCard = document.getElementById('metrocard');
+    const inner = document.getElementById('flipInner');
+    let startX = null;
+    flipCard.addEventListener('touchstart', function(e) {
+      startX = e.touches[0].clientX;
+    }, {passive: true});
+    flipCard.addEventListener('touchend', function(e) {
+      if (startX === null) return;
+      let diffX = e.changedTouches[0].clientX - startX;
+      if (Math.abs(diffX) > 50) {
+        inner.classList.toggle('flipped');
+      }
+      startX = null;
+    });
+    flipCard.addEventListener('click', function() {
+      inner.classList.toggle('flipped');
+    });
+  </script>
+</body>
+</html>
